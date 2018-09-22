@@ -1,8 +1,8 @@
 {
     "name": "@ahrakio/witty-webpack-declaration-files",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "",
-    "main": "dist/bundle.js",
+    "main": "src/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack"

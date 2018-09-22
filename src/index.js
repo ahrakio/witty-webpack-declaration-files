@@ -65,7 +65,7 @@ DeclarationFilesPlugin.prototype.apply = function(compiler) {
             });
         }
 
-        if (this.options.flatten) {
+        if (this.options.flatten && !this.options.merge) {
             included.forEach((value, index) => {
                 compilation.assets[path.basename(value)] = compilation.assets[value];
                 delete compilation.assets[value];

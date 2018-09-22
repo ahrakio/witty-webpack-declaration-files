@@ -1,10 +1,11 @@
 {
-    "name": "witty-webpack-declaration-files",
-    "version": "1.0.0",
+    "name": "@ahrakio/witty-webpack-declaration-files",
+    "version": "1.0.1",
     "description": "",
-    "main": "src/index.js",
+    "main": "dist/bundle.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack"
     },
     "repository": {
         "type": "git",
@@ -16,5 +17,10 @@
     "bugs": {
         "url": "https://github.com/ahrakio/witty-webpack-declaration-files/issues"
     },
-    "homepage": "https://github.com/ahrakio/witty-webpack-declaration-files#readme"
+    "homepage": "https://github.com/ahrakio/witty-webpack-declaration-files#readme",
+    "devDependencies": {
+        "clean-webpack-plugin": "^0.1.19",
+        "webpack": "^4.19.1",
+        "webpack-cli": "^3.1.0"
+    }
 }

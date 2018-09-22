@@ -1,5 +1,4 @@
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
 
 // Clean configurations
@@ -20,8 +19,5 @@ module.exports = {
     },
     target: "node",
     mode: "production",
-    plugins: [
-        new CleanWebpackPlugin(clean_paths, clean_options)
-        //  new UglifyJsPlugin()
-    ]
+    plugins: [new CleanWebpackPlugin(clean_paths, clean_options)]
 };

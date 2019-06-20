@@ -2,6 +2,8 @@ let fs = require("fs");
 let path = require("path");
 
 function DeclarationFilesPlugin(options) {
+    this.name = 'declaration-files-plugin';
+
     this.options = {
         merge: false,
         include: [],
@@ -15,14 +17,14 @@ function DeclarationFilesPlugin(options) {
 }
 
 DeclarationFilesPlugin.prototype.apply = function(compiler) {
-    compiler.plugin("compilation", (compilation) => {
+    compiler.hooks.compilation.tap(this.name, (compilation) => {
         if (this.options.path === "") {
             this.options.path = path.resolve(compilation.options.output.path, compilation.options.output.filename, "..");
         } else {
         }
     });
 
-    compiler.plugin("emit", (compilation, callback) => {
+    compiler.hooks.emit.tap(this.name, (compilation) => {
         const dtsRegex = /.d.ts$/;
         let assets = Object.keys(compilation.assets).filter((key) => dtsRegex.test(key));
 
@@ -71,8 +73,6 @@ DeclarationFilesPlugin.prototype.apply = function(compiler) {
                 delete compilation.assets[value];
             });
         }
-
-        callback();
     });
 };
 

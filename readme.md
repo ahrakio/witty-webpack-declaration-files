@@ -22,6 +22,9 @@ module.exports = {
         ...
         new DeclarationFilesPlugin({
             // options goes here
+             merge:true,
+            exclude:["server","*Routes"],
+            flatten:true
         })
     ]
 }

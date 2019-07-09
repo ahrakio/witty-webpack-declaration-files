@@ -29,6 +29,9 @@ DeclarationFilesPlugin.prototype.apply = function (compiler) {
         let included = [];
         let excluded = [];
 
+
+        
+
         if (this.options.include.length > 0) {
             included = assets.filter((key) => this.options.include.indexOf(path.basename(key).split(".d.ts")[0]) !== -1);
             excluded = assets.filter((key) => this.options.include.indexOf(path.basename(key).split(".d.ts")[0]) === -1);
@@ -38,6 +41,15 @@ DeclarationFilesPlugin.prototype.apply = function (compiler) {
         } else {
             included = assets;
             excluded = [];
+        }
+
+        if(this.options.exclude && this.options.exclude.length){
+            this.options.exclude.forEach((value, index) => {
+                if (value.indexOf('*') > -1) {
+                    value = value.replace('*', '')
+                    included = removeMatchedFiles(included, value)
+                }
+            });
         }
 
         if (this.options.merge) {
@@ -61,17 +73,10 @@ DeclarationFilesPlugin.prototype.apply = function (compiler) {
             };
         } else {
             excluded.forEach((value, index) => {
-                if (value.indexOf('*') > -1) {
-                    value = value.replace('*', '')
-                    const files = findFiles(assets, value)
-                    files.forEach(file => {
-                        delete compilation.assets[file]
-                    })
-                }
-                else
-                    delete compilation.assets[value];
+                delete compilation.assets[value];
             });
         }
+
 
         if (this.options.flatten && !this.options.merge) {
             included.forEach((value, index) => {
@@ -84,10 +89,21 @@ DeclarationFilesPlugin.prototype.apply = function (compiler) {
     });
 };
 
-function findFiles(array, match) {
-    return array.filter(function (item) {
-        return typeof item == 'string' && item.indexOf(match) > -1;
+function removeMatchedFiles(array, match) {
+    const indexes = []
+    array.forEach(function (item, index) {
+         if(typeof item == 'string' && item.indexOf(match) > -1){
+             indexes.push(index)
+         }
     });
+
+    if(indexes.length){
+        indexes.forEach(item => {
+            array.splice(item)
+        })
+    }
+
+    return array
 }
 
 module.exports = DeclarationFilesPlugin;

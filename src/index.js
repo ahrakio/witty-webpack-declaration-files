@@ -14,7 +14,7 @@ function DeclarationFilesPlugin(options) {
     Object.assign(this.options, options);
 }
 
-DeclarationFilesPlugin.prototype.apply = function(compiler) {
+DeclarationFilesPlugin.prototype.apply = function (compiler) {
     compiler.plugin("compilation", (compilation) => {
         if (this.options.path === "") {
             this.options.path = path.resolve(compilation.options.output.path, compilation.options.output.filename, "..");
@@ -61,7 +61,15 @@ DeclarationFilesPlugin.prototype.apply = function(compiler) {
             };
         } else {
             excluded.forEach((value, index) => {
-                delete compilation.assets[value];
+                if (value.indexOf('*') > -1) {
+                    value = value.replace('*', '')
+                    const files = findFiles(assets, value)
+                    files.forEach(file => {
+                        delete compilation.assets[file]
+                    })
+                }
+                else
+                    delete compilation.assets[value];
             });
         }
 
@@ -75,5 +83,11 @@ DeclarationFilesPlugin.prototype.apply = function(compiler) {
         callback();
     });
 };
+
+function findFiles(array, match) {
+    return array.filter(function (item) {
+        return typeof item == 'string' && item.indexOf(match) > -1;
+    });
+}
 
 module.exports = DeclarationFilesPlugin;
